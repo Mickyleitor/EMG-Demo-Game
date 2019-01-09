@@ -39,3 +39,6 @@ Unfortunately, EMG-operated prosthetics are perceived as difficult to operate, c
 * At the moment of applying force with the sword, a sword strike occurs. This strike is done in a vertical direction and will make a sharp cut to any object that is in this area.
 
 See the [Requirements](https://github.com/Mickyleitor/ElectroDuck_Processing/blob/master/Requirements.md) document to read the High Level and Technical Requirements.
+
+---
+Michele La Malva Moreno - [LinkedIn](https://www.linkedin.com/in/michele-la-malva-moreno/) | [Blogspot](https://mickysim.blogspot.com/) | [Github](https://github.com/Mickyleitor)
