@@ -37,4 +37,30 @@ void draw()
     background(0);
     text("DISPOSITIVO SIN CONEXION",width/2,height/2);
   }
-} //<>//
+}
+
+/*
+// ARDUINO CODE
+const int led = 13;
+
+int option;
+
+void setup(){
+  Serial1.begin(9600);
+  while(!Serial1){}
+  pinMode(led, OUTPUT);
+  randomSeed(analogRead(0));
+}
+
+void loop(){
+  if(random()%2 == 0){
+    Serial1.write('A');
+    digitalWrite(led, HIGH);
+  }else{
+    Serial1.write('B');
+    digitalWrite(led, LOW);
+  }
+  delay(500);
+}
+
+*/
