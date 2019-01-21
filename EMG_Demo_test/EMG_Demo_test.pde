@@ -34,6 +34,12 @@ void draw()
           }else if(value == 'I'){
             background(255,255,0);
             text("IZQUIERDA",width/3,height/2);
+          }else if(value == 'L'){
+            background(0,255,0);
+            text("DISPARO",width/2,height/1.5);
+          }else if((value == 'd') || (value == 'i')){
+            background(0,0,0);
+            text("NEUTRO",width/2,height/3);
           }
         }else if((millis() - BT_Timer) > BT_Timeout){
           BTserial.stop();
