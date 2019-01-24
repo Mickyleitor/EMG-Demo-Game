@@ -2,12 +2,13 @@ ArrayList<StarObject> Stars;
 ArrayList<LaserObject> Lasers;
 ArrayList<AsteroidObject> Asteroids;
 ArrayList<SatelliteObject> Satellites;
-PImage cockpit;
-int number_stars =  20;
-int number_asteroids =  int(number_stars*10);
+PImage cockpit,background;
+int number_stars =  10;
+int number_asteroids =  int(number_stars*5);
 int number_satellites =  int(number_stars/2);
 PVector velocity_spacecraft = new PVector(0,0,0.1);
 float sensibilidad = 0.01;
+int shiftted_background = 0;
 
 // Explicacion de esto en:
 // https://www.processing.org/discourse/beta/num_1139256015.html
@@ -19,6 +20,7 @@ Serial BTserial;  // Create object from Serial class
 String portName;
 StringList portNameBusy;
 int mode = 0;
+int LastChar = 'W';
 int BT_Timer = 0;
 int BT_Timeout = 1000;
 
@@ -32,6 +34,8 @@ void setup(){
   indicarSinConexion();
   cockpit = loadImage("cockpit.png");
   cockpit.resize(width,height);
+  background = loadImage("background.png");
+  background.resize(width,height);
   println("Loading ...");
   initializeArrays();
   thread("decodeKeyThread");
@@ -42,8 +46,8 @@ void draw(){
   try {
     if( mode == 1 ){
       if((millis() - BT_Timer) < BT_Timeout){
-        background(5,5,20);
-        
+        updateBackground();
+        // updateBackground();      
         for(int i = 0 ; i < Satellites.size() ; i++){
             Satellites.get(i).velocity_spacecraft = velocity_spacecraft;
             Satellites.get(i).update();
@@ -67,6 +71,7 @@ void draw(){
             Stars.get(i).update();
             Stars.get(i).display();
         }
+        
         updateSpaceWarcraft();
         searchForRemanents();
       }else{
@@ -89,7 +94,20 @@ void searchForRemanents(){
   }
   Lasers = NewLaserObjects;
 }
-
+void updateBackground(){
+  pushMatrix();
+  background(5,5,10);
+  // background(background);
+  /*
+  translate(width/2,height/2,0);  
+  image(background, shiftted_background, 0);
+  image(background, shiftted_background+background.width, 0);
+  */
+  shiftted_background += velocity_spacecraft.x*100;
+  if (shiftted_background<-background.width) 
+    shiftted_background=0;
+  popMatrix();
+}
 void updateSpaceWarcraft(){
   pushMatrix();
   translate(width/2,height/2,0);
@@ -233,20 +251,52 @@ void serialEvent(Serial port) {
     mode = 1 ;
   }else{
     int inByte = port.read();
-    switch (inByte) {
-      case 'L' : {
-        generateBeamOfPulse();
-        break;
+    if((millis() - BT_Timer) < 250){
+      switch (LastChar) {
+        case 'I' : {
+          if(inByte == 'I'){
+            if(velocity_spacecraft.x < 1) velocity_spacecraft.x += sensibilidad*10;
+          }else if(inByte == 'D'){
+            generateBeamOfPulse();
+          }
+          break;
+        }
+        case 'D' : {
+          if(inByte == 'D'){
+            if(velocity_spacecraft.x > -1) velocity_spacecraft.x -= sensibilidad*10;
+          }else if(inByte == 'I'){
+            generateBeamOfPulse();
+          }
+          break;
+        }
+        case 'L' : {
+          if(inByte == 'L'){
+            generateBeamOfPulse();
+          }else if(inByte == 'D'){
+            if(velocity_spacecraft.x > -1) velocity_spacecraft.x -= sensibilidad*10;
+          }else if(inByte == 'I'){
+            if(velocity_spacecraft.x < 1) velocity_spacecraft.x += sensibilidad*10;
+          }
+          break;
+        }
       }
-      case 'I' : {
-        if(velocity_spacecraft.x < 1) velocity_spacecraft.x += sensibilidad;
-        break;
-      }
-      case 'D' : {
-        if(velocity_spacecraft.x > -1) velocity_spacecraft.x -= sensibilidad;
-        break;
+    }else{
+      switch (inByte) {
+        case 'I' : {
+          if(velocity_spacecraft.x < 1) velocity_spacecraft.x += sensibilidad*10;
+          break;
+        }
+        case 'D' : {
+          if(velocity_spacecraft.x > -1) velocity_spacecraft.x -= sensibilidad*10;
+          break;
+        }
+        case 'L' : {
+          generateBeamOfPulse();
+          break;
+        }
       }
     }
+    LastChar = inByte;
   }
   BT_Timer = millis();
 }

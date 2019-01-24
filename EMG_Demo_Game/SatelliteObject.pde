@@ -1,6 +1,6 @@
 class SatelliteObject {
   PVector position = new PVector(10,10,10);
-  PVector velocity = new PVector(random(-2,2),0,100);
+  PVector velocity = new PVector(random(-2,2),0,1000);
   PVector velocity_spacecraft = new PVector(0,0,0);
   PImage [] image = new PImage[6];
   PImage [] explosion = new PImage[16];

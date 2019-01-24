@@ -1,10 +1,10 @@
 class StarObject {
   PVector position = new PVector(10,10,10);
-  PVector velocity = new PVector(0,0,100);
+  PVector velocity = new PVector(0,0,10);
   PVector velocity_spacecraft = new PVector(0,0,0);
   PImage image;
   boolean isInRange = true;
-  int size_image = 1000;
+  int size_image = 100;
   
   void display(){
     pushMatrix();
@@ -36,7 +36,7 @@ class StarObject {
   
   StarObject(){ 
     image = loadImage("star.png");
-    size_image = size_image * int(random(1,2.5));
+    size_image = size_image * int(random(1,10));
     image.resize(size_image,size_image);
   }
 }

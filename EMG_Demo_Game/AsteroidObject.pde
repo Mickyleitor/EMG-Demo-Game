@@ -1,10 +1,10 @@
 class AsteroidObject {
   PVector position = new PVector(10,10,10);
-  PVector velocity = new PVector(random(-2,2),random(-2,2),100);
+  PVector velocity = new PVector(random(-2,2),random(-2,2),1000);
   PVector velocity_spacecraft = new PVector(0,0,0);
   PImage image;
   boolean isInRange = true;
-  int size_image = 50;
+  int size_image = 5;
   
   
   void display(){
@@ -40,7 +40,7 @@ class AsteroidObject {
   AsteroidObject(){ 
     if(random(0,3) > 1) image = loadImage("Asteroid1.png");
     else image = loadImage("Asteroid2.png");
-    size_image = size_image * int(random(1,2.5));
+    size_image = size_image * int(random(1,10));
     image.resize(size_image,size_image);
   }
 }
