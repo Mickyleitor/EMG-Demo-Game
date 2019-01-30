@@ -1,10 +1,9 @@
 class LaserObject {
   PVector position;
   PVector velocity;  
-  PVector velocity_spacecraft = new PVector(0,0,0);
   PImage image;
   boolean isMuzzle = true;
-  int size_image = 200;
+  int size_image = width/7;
   
   
   void display(){

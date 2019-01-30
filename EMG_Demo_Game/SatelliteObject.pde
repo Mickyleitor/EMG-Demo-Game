@@ -1,15 +1,12 @@
 class SatelliteObject {
   PVector position = new PVector(10,10,10);
-  PVector velocity = new PVector(random(-2,2),0,1000);
-  PVector velocity_spacecraft = new PVector(0,0,0);
-  PImage [] image = new PImage[6];
+  PVector velocity = new PVector(random(-2,2),0,100);
+  PImage image;
   PImage [] explosion = new PImage[16];
   boolean isInRange   = true;
   boolean isDestroyed = false;
-  int size_image = 30;
-  int count_animation = 0;
-  int selected_satellite = int(random(1,6));
-  
+  int size_image = width/7;
+  int count_animation = 0;  
   
   void display(){
     pushMatrix();
@@ -18,7 +15,7 @@ class SatelliteObject {
     if(isDestroyed){
       image(explosion[count_animation],0,0); 
     }else{
-      image(image[selected_satellite],0,0); 
+      image(image,0,0); 
     }
     popMatrix();
   }
@@ -50,7 +47,6 @@ class SatelliteObject {
       isInRange = true;
       if(isDestroyed){
         count_animation = 0;
-        int selected_satellite = int(random(1,6));
         isDestroyed = false;
       }
     }
@@ -61,17 +57,15 @@ class SatelliteObject {
   void takeDamageFrom(LaserObject laser){
     PVector distance = position.copy();
     distance.sub(laser.position);
-    if(distance.mag() < size_image*2){ 
+    if(distance.mag() < size_image*0.5){ 
       isDestroyed = true;
       println("Object in "+position+" impacted by laser at "+laser.position);
     }
   }
   
-  SatelliteObject(){
-    for(int i= 0; i < 6 ; i++){
-      image[i] = loadImage("bin"+(i+1)+".png");
-      image[i].resize(size_image,size_image);
-    }
+  SatelliteObject(int id){
+    image = loadImage("bin"+(id%6 + 1)+".png");
+    image.resize(size_image,size_image);
     for(int i= 0; i < 16 ; i++){
       explosion[i] = loadImage("animations/Explosion"+(i+1)+".png");
       explosion[i].resize(size_image,size_image);
